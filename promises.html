@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promises Challenge</title>
+</head>
+<body>
+    <p id="output"></p>
+    <script>
+        let myJSON = '{ "name":"Mpho", "surname": "Beki", "interests": ["hockey","volleyball","tennis"],"DOB": "1982/04/17","no.": "082.909.9182" }';
+        
+        //Create JavaScript Object
+        let myJSObj = JSON.parse(myJSON, function (key, value) {
+          if (key == "DOB") {
+            return new Date(value);
+            }
+            else if (key === "no.") {return parseFloat(value)
+          } else {
+            return value;
+          }
+          });
+        
+        console.log(myJSObj);
+        
+       //Convert back to JSON data 
+       let myJSON2 = JSON.stringify(myJSObj);
+
+
+       //Save to local storage
+       // localStorage.setItem("JSONData", myJSON2);
+
+       //Access data from storage
+       //let myText = localStorage.getItem("JSONData");
+
+       //Convert back to JavaScript object and print in html element
+       //let newObj = JSON.parse(myText);
+       //document.getElementById("output").innerHTML = myText, null, 4;
+       //console.log(newObj.name);
+
+       //Create promise
+
+      // Convert the relevant code of your previous challenge into a promise which checks whether the object was transformed into a json format.
+      //Using a promise's syntax, add the rest of the logic you'd done for your previous challenge into a promise (e.g. storing localStorage, converting to json, displaying HTML, etc.)
+      //Using Separation of concern if any of the steps within your promise fails to have it display an error.
+       let myPromise = new Promise ((resolve, reject)=>{
+       if (typeof myJSON2 == 'string'){
+        resolve(myJSON2);}
+           else{reject();}
+       })
+    
+       myPromise.then((handleSuccess)=>{
+           for (x in handleSuccess){
+            localStorage.setItem("JSONData", myJSON2);
+            let myText = localStorage.getItem("JSONData");
+            let newObj = JSON.parse(myText);
+            document.getElementById("output").innerHTML = myText;
+          // document.getElementById("output").innerHTML += x + " : " + handleSuccess[x] + "<br>";
+           }
+     })
+    .catch((handleFailure) => {
+     console.log("Something went wrong" + handleFailure)
+     });
+    
+</script>
+</body>
+</html>
